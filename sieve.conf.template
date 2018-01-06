@@ -1,0 +1,6 @@
+
+[DEFAULT]
+server = sense.tw
+
+[sense.tw]
+url = https://sense.tw/api
