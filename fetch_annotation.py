@@ -20,7 +20,7 @@ def fetch_rows(api_url, rows, queries, sleep_sec=1):
     total = data["total"]
     next_offset = query["offset"] + query["limit"]
     next_queries = queries[1:] if next_offset >= total \
-            else queries[1:] + [dict(query, **{ "offset": next_offset })]
+            else queries[1:] + [{**query, **{ "offset": next_offset }}]
     return fetch_rows(api_url, rows + data["rows"], next_queries)
 
 def annotations(api_url,
