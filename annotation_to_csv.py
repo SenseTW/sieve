@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import requests, pickle, time, logging, os, configparser
+import requests, time, logging, os, configparser
+import csv
 
 def query_parameters(url, tag, limit):
     q = { "limit": limit, "offset": 0 }
@@ -23,11 +24,7 @@ def fetch_rows(api_url, rows, queries, sleep_sec=1):
             else queries[1:] + [{**query, **{ "offset": next_offset }}]
     return fetch_rows(api_url, rows + data["rows"], next_queries)
 
-def annotations(api_url,
-        uris=None, tags=None, until=None, limit=None):
-    """
-    XXX `limit` and `until` are unimplemented.
-    """
+def annotations(api_url, uris=None, tags=None):
     if uris is None: uris = [ None, ]
     if tags is None: tags = [ None, ]
     # 200 is hypothes.is API limit
@@ -42,7 +39,7 @@ class AnnotationData:
     """
     Data object for data extracted from an annotation.
     """
-    _fields = ["updated", "tags", "text", "uri", "target"]
+    _fields = ["id", "updated", "tags", "text", "uri", "target"]
 
     def __init__(self, **kwargs):
         for key in kwargs.keys():
@@ -57,7 +54,7 @@ class AnnotationData:
         return repr(self.__dict__)
 
 def extract_data(row):
-    data = dict([ (key, row[key]) for key in ["updated", "tags", "text", "uri"] ])
+    data = dict([ (key, row[key]) for key in ["id", "updated", "tags", "text", "uri"] ])
 
     def extract_target(targets):
         if len(targets) == 0: return None
@@ -80,16 +77,42 @@ def extract_data(row):
     data["target"] = extract_target(row["target"])
     return AnnotationData(**data)
 
-def save(api_url, storage_path, uris=None):
-    rows = annotations(api_url, uris=uris)
-    data = [ extract_data(row) for row in rows ]
-    with open(storage_path, "wb") as fh:
-        pickle.dump(data, fh)
+def read_csv(csv_path):
+    if os.path.exists(csv_path):
+        with open(csv_path, "r", newline="") as fh:
+            return list(csv.DictReader(fh))
+    else:
+        return []
+
+def save_csv(csv_path, data):
+    fieldnames = ["id", "target", "tags", "ORID"]
+    rows = read_csv(csv_path)
+    index = dict([ (x["id"], i) for i, x in enumerate(rows) ])
+    for x in data:
+        if x.id in index:
+            row = rows[index[x.id]]
+            row["target"] = x.target
+            row["tags"] = ", ".join(x.tags)
+        else:
+            rows.append({
+                "id": x.id,
+                "target": x.target,
+                "tags": ", ".join(x.tags),
+                "ORID": "",
+                })
+    with open(csv_path, "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+def pull_and_merge(api_url, csv_path, uris=None):
+    data = [ extract_data(x) for x in annotations(api_url, uris=uris) ]
+    save_csv(csv_path, data)
 
 def main(config, logger):
     server = config["DEFAULT"]["server"]
     api_url = config[server]["url"]
-    save(api_url, "storage/annotations.pkl", uris=[
+    pull_and_merge(api_url, "storage/annotations.csv", uris=[
         "https://udn.com/news/plus/9401/2892368"
         ])
 
@@ -101,7 +124,7 @@ if __name__ == "__main__":
     else:
         config["DEFAULT"] = { "server": "sense.tw" }
         config["sense.tw"] = { "url": "https://sense.tw" }
-    logger = logging.getLogger("fetch_annotation")
+    logger = logging.getLogger("annotation_to_csv")
     logger.setLevel(config["DEFAULT"].get("loglevel") or logging.DEBUG)
     logger.addHandler(logging.StreamHandler())
     main(config, logger)

@@ -1,6 +1,7 @@
 
 [DEFAULT]
 server = sense.tw
+loglevel = WARNING
 
 [sense.tw]
 url = https://sense.tw/api
