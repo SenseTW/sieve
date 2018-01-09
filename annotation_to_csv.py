@@ -109,14 +109,17 @@ def pull_and_merge(api_url, csv_path, uris=None):
     data = [ extract_data(x) for x in annotations(api_url, uris=uris) ]
     save_csv(csv_path, data)
 
-def main(config, logger):
+def main(config, logger, uris=None):
     server = config["DEFAULT"]["server"]
     api_url = config[server]["url"]
-    pull_and_merge(api_url, "storage/annotations.csv", uris=[
-        "https://udn.com/news/plus/9401/2892368"
-        ])
+    pull_and_merge(api_url, "storage/annotations.csv", uris=uris)
 
 if __name__ == "__main__":
+    import sys
+    uris = sys.argv[1:] if len(sys.argv) > 1 else [
+        "https://udn.com/news/plus/9401/2892368",
+        ]
+
     config_path = "sieve.conf"
     config = configparser.ConfigParser()
     if os.path.exists(config_path):
@@ -127,4 +130,4 @@ if __name__ == "__main__":
     logger = logging.getLogger("annotation_to_csv")
     logger.setLevel(config["DEFAULT"].get("loglevel") or logging.DEBUG)
     logger.addHandler(logging.StreamHandler())
-    main(config, logger)
+    main(config, logger, uris=uris)
