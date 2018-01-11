@@ -95,7 +95,7 @@ def save_data_to_gsheet(updated, gc, folder_id, index, dataitems):
         last = pendulum.parse(data[0].updated)
         for d in data:
             u = pendulum.parse(d.updated)
-            if last > u:
+            if last < u:
                 last = u
         return last
 
