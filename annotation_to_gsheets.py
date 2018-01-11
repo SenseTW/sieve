@@ -82,7 +82,7 @@ def save_uri_to_gsheet(gc, folder_id, index, uri, data):
     else:
         sh = gc.open_by_key(sheet_id)
     wks = sh.sheet1
-    annotation_index = { (idx, i + 1) for i, idx in enumerate(wks.get_col(1)) }
+    annotation_index = dict([ (idx, i + 1) for i, idx in enumerate(wks.get_col(1)) ])
     save_annotations_to_gsheet(wks, annotation_index, data)
     wks.sync()
     return sh.id
