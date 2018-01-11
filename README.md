@@ -12,3 +12,8 @@ $ make all
 $ pipenv shell
 $ python fetch_annotation.py
 ```
+
+## Google Drive
+
+* An index of all tabular data sheets is saved in "Sense.tw Tabular Index" with columns: id, title, uri, last_updated.
+* Each annotated link is saved to a sheet with title as the linked page title with columns: id, target, tags.

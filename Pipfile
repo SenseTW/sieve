@@ -8,6 +8,8 @@ name = "pypi"
 [packages]
 
 requests = "*"
+pygsheets = "*"
+pendulum = "*"
 
 
 [dev-packages]
