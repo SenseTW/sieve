@@ -107,7 +107,7 @@ def save_data_to_gsheet(updated, gc, folder_id, index, dataitems):
         "uri": uri,
         "last_updated": get_last_updated(data),
     })
-    time.sleep(1)
+    time.sleep(2)
     return save_data_to_gsheet(updated, gc, folder_id, index, dataitems[1:])
 
 def save_index(sh, index, updated):
