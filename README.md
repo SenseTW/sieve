@@ -5,12 +5,13 @@
 
 1. Copy `sieve.conf.template` to `sieve.conf` and edit it.
 
-## Usage
+## Installation
 
 ```
 $ make all
-$ pipenv shell
-$ python fetch_annotation.py
+# Create a Google Sheets credential `client_secret.json` by following <https://pygsheets.readthedocs.io/en/latest/authorizing.html>
+$ pipenv run ./annotation_to_gsheets.py
+# First time startup will create a credential `sheets.googleapis.com-python.json` with non-local OAuth authentication.
 ```
 
 ## Google Drive

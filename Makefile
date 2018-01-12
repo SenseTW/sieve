@@ -26,3 +26,6 @@ freeze:
 test:
 	python -m unittest tests/*.py
 	# py.test
+
+start:
+	pipenv run ./annotation_to_gsheets.py
