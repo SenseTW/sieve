@@ -117,7 +117,7 @@ def save_index(sh, index, updated):
     entry = updated[0]
     i = index_lookup(wks.get_all_records(), entry["uri"])
     if i is not None:
-        wks.update_cell("D{i}".format(i=i), entry["last_updated"])
+        wks.update_cell("D{i}".format(i=i), str(entry["last_updated"]))
     else:
         wks.append_table(values=[entry["id"], entry["title"], entry["uri"], str(entry["last_updated"])])
     return save_index(sh, index, updated[1:])
