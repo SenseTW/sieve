@@ -14,6 +14,14 @@ $ pipenv run ./annotation_to_gsheets.py
 # First time startup will create a credential `sheets.googleapis.com-python.json` with non-local OAuth authentication.
 ```
 
+## Usage
+
+```
+$ pipenv run ./annotation_to_gsheets.py
+```
+
+The resulting data are collected in <https://drive.google.com/drive/folders/1lFemgEeleSVN7BwU7_2LzkjBLAgoFg-n?usp=sharing>.
+
 ## Google Drive
 
 * An index of all tabular data sheets is saved in "Sense.tw Tabular Index" with columns: id, title, uri, last_updated.
