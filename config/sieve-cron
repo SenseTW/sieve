@@ -1,2 +1,2 @@
 PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-* * * * *  cd /app && /usr/local/bin/pipenv run ./annotation_to_gsheets.py >>/var/log/cron.log 2>&1
+*/5 * * * *  cd /app && /usr/local/bin/pipenv run ./annotation_to_gsheets.py >>/var/log/cron.log 2>&1
