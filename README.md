@@ -38,5 +38,5 @@ docker build -t asia.gcr.io/ggv-notetool/sieve:latest .
 * Create ConfigMap before deploy
 ```
 kubectl create configmap sieve-config --from-file=sheets.googleapis.com-python.json --from-file=sieve.conf
-kubectl create -f config/sieve.yaml
+kubectl create -f gcloud/sieve.yaml
 ```
