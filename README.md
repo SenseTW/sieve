@@ -26,3 +26,17 @@ The resulting data are collected in <https://drive.google.com/drive/folders/1lFe
 
 * An index of all tabular data sheets is saved in "Sense.tw Tabular Index" with columns: id, title, uri, last_updated.
 * Each annotated link is saved to a sheet with title as the linked page title with columns: id, target, tags.
+
+## Docker
+
+```
+docker build -t asia.gcr.io/ggv-notetool/sieve:latest .
+```
+
+## Kubernetes
+
+* Create ConfigMap before deploy
+```
+kubectl create configmap sieve-config --from-file=sheets.googleapis.com-python.json --from-file=sieve.conf
+kubectl create -f config/sieve.yaml
+```

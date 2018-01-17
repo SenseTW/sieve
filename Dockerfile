@@ -4,7 +4,8 @@ COPY . /app
 
 RUN apt-get update && apt-get install -y cron
 RUN make all
-COPY config/sieve-cron /etc/cron.d/sieve-cron
-RUN crontab /etc/cron.d/sieve-cron
+RUN cp /app/config/sieve-cron /etc/cron.d/sieve-cron
+#RUN crontab /etc/cron.d/sieve-cron
+RUN apt-get clean
 
-CMD ["cron", "-f"]
+CMD ["/app/docker-init.sh"]

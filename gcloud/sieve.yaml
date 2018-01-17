@@ -13,8 +13,15 @@ spec:
         - image: asia.gcr.io/ggv-notetool/sieve:latest
           imagePullPolicy: Always
           name: sieve
+          volumeMounts:
+          - name: config-volume
+            mountPath: /config
           resources:
             requests:
               memory: "8Mi"
               cpu: "10m"
       terminationGracePeriodSeconds: 60
+      volumes:
+        - name: config-volume
+          configMap:
+            name: sieve-config
