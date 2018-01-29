@@ -41,7 +41,7 @@ def extract_data(row):
             return extract_target(targets[1:])
 
     data["target"] = extract_target(row["target"])
-    data["title"] = row["document"]["title"][0]
+    data["title"] = row["document"]["title"][0] if "title" in row["document"] else ""
     data["link"] = row["links"]["html"]
     return AnnotationData(**data)
 
