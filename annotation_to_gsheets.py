@@ -73,7 +73,6 @@ def save_annotations_to_gsheet(wks, index, data):
         wks.update_cell("F{i}".format(i=i), d.user)
     else:
         wks.append_table(values=[d.id, d.target, d.text, ", ".join(d.tags), d.link])
-    time.sleep(2)
     return save_annotations_to_gsheet(wks, index, data[1:])
 
 def save_uri_to_gsheet(gc, folder_id, index, uri, data):
@@ -86,6 +85,7 @@ def save_uri_to_gsheet(gc, folder_id, index, uri, data):
         sh = gc.open_by_key(sheet_id)
     wks = sh.sheet1
     annotation_index = dict([ (idx, i + 1) for i, idx in enumerate(wks.get_col(1)) ])
+    wks.unlink()
     save_annotations_to_gsheet(wks, annotation_index, data)
     wks.sync()
     return sh.id
