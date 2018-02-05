@@ -9,7 +9,7 @@ cred_path = "sheets.googleapis.com-python.json"
 
 index_title = "Sense.tw 目錄"
 index_cols = ["id", "title", "uri", "last_updated"]
-gsheet_cols = ["id", "target", "text", "tags", "link"]
+gsheet_cols = ["id", "target", "text", "tags", "link", "user"]
 
 def get_index_sheet(gc, folder_id):
     try:
@@ -68,6 +68,7 @@ def save_annotations_to_gsheet(wks, index, data):
         wks.update_cell("C{i}".format(i=i), d.text)
         wks.update_cell("D{i}".format(i=i), ", ".join(d.tags))
         wks.update_cell("E{i}".format(i=i), d.link)
+        wks.update_cell("F{i}".format(i=i), d.user)
     else:
         wks.append_table(values=[d.id, d.target, d.text, ", ".join(d.tags), d.link])
     time.sleep(2)

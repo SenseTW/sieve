@@ -5,7 +5,7 @@ class AnnotationData:
     """
     Data object for data extracted from an annotation.
     """
-    _fields = ["id", "updated", "tags", "text", "uri", "link", "target", "title"]
+    _fields = ["id", "updated", "tags", "text", "uri", "link", "target", "title", "user"]
 
     def __init__(self, **kwargs):
         for key in kwargs.keys():
@@ -20,7 +20,7 @@ class AnnotationData:
         return repr(self.__dict__)
 
 def extract_data(row):
-    data = dict([ (key, row[key]) for key in ["id", "updated", "tags", "text", "uri"] ])
+    data = dict([ (key, row[key]) for key in ["id", "updated", "tags", "text", "uri", "user"] ])
 
     def extract_target(targets):
         if len(targets) == 0: return None
