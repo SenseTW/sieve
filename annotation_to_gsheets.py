@@ -27,13 +27,15 @@ def get_sheets_index(gc, folder_id):
     records = wks.get_all_records()
     return records
 
-def index_lookup(index, uri, field=None):
+def index_lookup(index, uri, field=None, default_value=None):
     for i, entry in enumerate(index):
         if entry["uri"] == uri:
             if field is None:
                 return i + 2
-            else:
+            elif field in entry:
                 return entry[field]
+            else:
+                return default_value
     return None
 
 def get_updated_data(index, data):
